@@ -1,20 +1,19 @@
 class RecentCounter {
-    int [] times ;
-    int size = 0;
-    public RecentCounter() {
-        this.times = new int[10000];
+    private static final int[] queue = new int[10000];
+    private int start;
+    private int end;
+
+    public RecentCounter() {        
+        start = 0;
+        end = 0;
     }
     
     public int ping(int t) {
-        times[size++] = t;
-        int count = 0;
-        for (int i = size - 1; i >= 0; i--) {
-            if (t - times[i] <= 3000) {
-                count++;
-            }
-            else break;
+        while (start < end && (t - queue[start] > 3000)) {
+            start++;
         }
-        return count ;
+        queue[end++] = t;
+        return end - start;
     }
 }
 
