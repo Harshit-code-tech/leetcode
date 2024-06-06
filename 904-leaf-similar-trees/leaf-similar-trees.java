@@ -15,21 +15,28 @@
  */
 class Solution {
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        StringBuilder seq1 = new StringBuilder();
-        StringBuilder seq2 = new StringBuilder();
-
-        buildSeq(root1, seq1);
-        buildSeq(root2, seq2);
-
-        return seq1.toString().equals(seq2.toString());
+        if(root1.left == null && root1.right == null && root2.left == null && root2.right == null) return root1.val == root2.val;
+        List<Integer> firstList = new ArrayList<>();
+        List<Integer> secondList = new ArrayList<>();
+        addLastLayer(root1,firstList);
+        addLastLayer(root2,secondList);
+        if(firstList.size() != secondList.size()){
+            return false;
+        }
+        for( int i = 0; i < firstList.size(); i++){
+            if(!firstList.get(i).equals(secondList.get(i))){
+                return false;
+            }
+        }
+        return true;
     }
-    private void buildSeq(TreeNode root, StringBuilder seq){
-         if(root == null)return;
-         if(root.left == null && root.right == null){
-             seq.append(Integer.toString(root.val) + " ");
-             return;
-         }
-         buildSeq(root.left, seq);
-         buildSeq(root.right, seq);
+     public void addLastLayer(TreeNode root, List<Integer> listToAdd){
+        if(root == null) return;
+        if(root.left == null && root.right == null){
+            listToAdd.add(root.val );
+            return;
+        }
+        addLastLayer(root.left, listToAdd);
+        addLastLayer(root.right, listToAdd);
     }
 }
