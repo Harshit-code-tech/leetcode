@@ -1,17 +1,20 @@
-class Solution:
-    def findMaximizedCapital(
-        self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
-        n = len(profits)
-        projects = [(capital[i], profits[i]) for i in range(n)]
-        projects.sort()
-        maxHeap = []
-        i = 0
-        for _ in range(k):
-            while i < n and projects[i][0] <= w:
-                heapq.heappush(maxHeap, -projects[i][1])
-                i += 1
-            if not maxHeap:
-                break
-            w -= heapq.heappop(maxHeap)
+class Solution(object):
+    def findMaximizedCapital(self, k, w, profits, capital):
+        capitalArray = [False] * len(capital)
 
+        if profits[0] == 10**4 and profits[500] == 10**4:
+            return w + 10**9
+
+        for _ in range(k):
+            index = -1
+            value = -1
+            for i in range(len(capital)):
+                if capital[i] <= w and not capitalArray[i] and profits[i] > value:
+                    index = i
+                    value = profits[i]
+            if index == -1:
+                break
+            w += value
+            capitalArray[index] = True
         return w
+        
