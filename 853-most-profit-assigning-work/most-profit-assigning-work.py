@@ -1,20 +1,14 @@
-class Solution(object):
-    def maxProfitAssignment(self, difficulty, profit, worker):
-        max_difficulty = max(difficulty)
-        max_profit_up_to_difficulty = [0] * (max_difficulty + 1)
-
-        for d, p in zip(difficulty, profit):
-            max_profit_up_to_difficulty[d] = max(max_profit_up_to_difficulty[d], p)
-
-        for i in range(1, max_difficulty + 1):
-            max_profit_up_to_difficulty[i] = max(max_profit_up_to_difficulty[i], max_profit_up_to_difficulty[i - 1])
-
-        total_profit = 0
-        for ability in worker:
-            if ability > max_difficulty:
-                total_profit += max_profit_up_to_difficulty[max_difficulty]
-            else:
-                total_profit += max_profit_up_to_difficulty[ability]
-
-        return total_profit
+class Solution:
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        jobs = sorted(list(zip(difficulty, profit)), key=lambda x: (x[0], x[1]))
         
+        worker.sort()
+        res, i, max_profit = 0, 0, 0
+        for skill in worker:
+            while i < len(jobs):
+                if jobs[i][0] > skill:
+                    break
+                max_profit = max(max_profit, jobs[i][1])
+                i += 1
+            res += max_profit
+        return res
