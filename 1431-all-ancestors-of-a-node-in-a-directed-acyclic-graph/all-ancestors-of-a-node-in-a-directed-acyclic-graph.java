@@ -1,34 +1,36 @@
 class Solution {
-    public void dfs(ArrayList<Integer> arr[],int p , int c , boolean visited[],List<List<Integer>> ans){
-        visited[c]=true;
-        for(int ele:arr[c]){
-            if(!visited[ele]){
-                ans.get(ele).add(p);
-                dfs(arr,p,ele,visited,ans);
+    public List<List<Integer>> getAncestors(int n, int[][] edges) {
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            res.add(new ArrayList<>());
+        }
+
+        ArrayList<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            dfs(graph, i, i, res, new boolean[n]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            res.get(i).sort(Integer::compareTo);
+        }
+
+        return res;
+    }
+
+    private void dfs(ArrayList<Integer>[] graph, int parent, int curr, List<List<Integer>> res, boolean[] visit) {
+        visit[curr] = true;
+        for (int dest : graph[curr]) {
+            if (!visit[dest]) {
+                res.get(dest).add(parent);
+                dfs(graph, parent, dest, res, visit);
             }
         }
-    }
-    public List<List<Integer>> getAncestors(int n, int[][] edges) {
-        List<List<Integer>> ans=new ArrayList<>();
-        for(int i=0;i<n;i++){
- ans.add(new ArrayList<>());
-        }
-          ArrayList<Integer>[] adj = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        for (int[] ele : edges) {
-            adj[ele[0]].add(ele[1]);
-        }
-        // for(ArrayList<Integer> ele:adj){
-        //     System.out.println(ele);
-        // }
-        for(int i=0;i<n;i++){
-  dfs(adj,i,i,new boolean[n],ans);
-        }
-        for(int i=0;i<n;i++){
-            Collections.sort(ans.get(i));
-        }
- return ans;      
     }
 }
