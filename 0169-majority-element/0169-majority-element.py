@@ -8,4 +8,7 @@ class Solution:
                 candidate = num
             count += (1 if num == candidate else -1)
 
-        return candidate
+        # 2nd Pass: Validation
+        if nums.count(candidate) > len(nums) // 2:
+            return candidate
+        return -1  # or None, if no majority element
