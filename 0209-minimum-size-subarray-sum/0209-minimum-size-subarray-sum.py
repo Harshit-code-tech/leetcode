@@ -1,16 +1,26 @@
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         n = len(nums)
-        left = 0
-        total = 0
-        min_length = float('inf')
+        prefix = [0] * (n + 1)
 
-        for right in range(n):
-            total += nums[right]
 
-            while total >= target:
-                min_length = min(min_length, right - left + 1)
-                total -= nums[left]
-                left += 1
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
 
-        return min_length if min_length != float('inf') else 0
+        def binary_search(left: int, right: int, value: int) -> int:
+            while left < right:
+                mid = (left + right) // 2
+                if prefix[mid] < value:
+                    left = mid + 1
+                else:
+                    right = mid
+            return left
+
+        min_len = float('inf')
+        for i in range(n):
+            desired = prefix[i] + target
+            bound = binary_search(i + 1, n + 1, desired)
+            if bound <= n:
+                min_len = min(min_len, bound - i)
+
+        return min_len if min_len != float('inf') else 0
