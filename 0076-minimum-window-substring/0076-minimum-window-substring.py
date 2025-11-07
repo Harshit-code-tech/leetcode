@@ -16,7 +16,6 @@ class Solution:
             ch = s[right]
             freq_s[ch] = freq_s.get(ch, 0) + 1
 
-            # check if window has all required chars
             def has_all():
                 for k in freq_t:
                     if freq_s.get(k, 0) < freq_t[k]:
