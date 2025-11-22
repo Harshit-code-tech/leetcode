@@ -3,23 +3,19 @@ class Solution:
         if len(s)!=len(t):
             return False
 
-        count_t={}
-        count_s={}
+        char_st={}
         for char in s:
-            if char in count_s:
-                count_s[char]+=1
-            else:
-                count_s[char]=1
-
+            if char in char_st:
+                char_st[char]+=1
+            char_st[char]=1
         for char in t:
-            if char in count_t:
-                count_t[char]+=1
-            else:
-                count_t[char]=1
-
-        if count_s!=count_t:
-            return False
-        return True
+            if char in char_st:
+                char_st[char]-=1
+            char_st[char]=-1
+        for val in char_st.values():
+            if val<0:
+                return False
+            return True
         # if len(s) != len(t):
         #     return False
 
